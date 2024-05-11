@@ -54,11 +54,36 @@ func main() {
 	}
 
 	if *byteCountFlagPtr {
-		totalBytes := byteCounter(*f) // to be counted
+		totalBytes := byteCounter(*f)
 		fmt.Printf("%v ", totalBytes)
 	}
 
+	if !*byteCountFlagPtr && !*newLineCountPtr && !*wordCountPtr && !*characterCountPtr {
+		printAll(f)
+	}
+
 	fmt.Printf("%v\n", f.Name())
+
+}
+
+func printAll(f *os.File) {
+	// totalLines
+	totalLines, err := lineCounter(f)
+	if err != nil {
+		panic(fmt.Sprintf("P#1WQAA0: %v\n", err))
+	}
+
+	// totalWords
+	fb, err := os.ReadFile(f.Name())
+	totalWords := wordCounter(fb)
+	if err != nil {
+		panic(fmt.Sprintf("P#1WQAA0: %v\n", err))
+	}
+
+	// totalBytes
+	totalBytes := byteCounter(*f)
+
+	fmt.Printf("%v %v %v ", totalLines, totalWords, totalBytes)
 
 }
 
